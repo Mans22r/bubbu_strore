@@ -27,9 +27,9 @@ class ProductCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        color: const Color(0xFFCDBCA8),
+        color: const Color.fromARGB(255, 255, 255, 255),
         elevation: 5,
-        shadowColor: Colors.grey.withOpacity(0.5),
+        shadowColor: Colors.grey,
         child: Stack(
           children: [
             Column(
@@ -70,22 +70,23 @@ class ProductCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '\$${product.price.toStringAsFixed(2)}',
+                        '₹${product.price.toStringAsFixed(2)}/-',
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.green,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const Divider(),
+                      const SizedBox(height: 10),
                       Text(
                         product.description.length > 40
                             ? '${product.description.substring(0, 40)}...'
                             : product.description,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Colors.grey,
+                          color: Color.fromARGB(255, 0, 0, 0),
                         ),
-                        overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.visible,
                       ),
                     ],
                   ),
@@ -99,7 +100,7 @@ class ProductCard extends StatelessWidget {
               child: IconButton(
                 icon: Icon(
                   isInWishlist ? Icons.favorite : Icons.favorite_border,
-                  color: isInWishlist ? Colors.red : Colors.grey,
+                  color: isInWishlist ? Colors.red : const Color.fromARGB(255, 255, 255, 255),
                 ),
                 onPressed: onAddToWishlist,
               ),
@@ -114,7 +115,7 @@ class ProductCard extends StatelessWidget {
   String _trimProductName(String name) {
     List<String> words = name.split(' ');
     if (words.length > 3) {
-      return '${words.take(3).join(' ')} etc.';
+      return '${words.take(3).join(' ')}...';
     }
     return name;
   }

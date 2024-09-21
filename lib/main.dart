@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        scaffoldBackgroundColor: const Color.fromARGB(255, 107, 122, 137), // Set background color here
+        scaffoldBackgroundColor: const Color(0xFF8AB6F9), //Color(0xFFCDBCA8)
       ),
       home: const HomeScreen(),
     );
