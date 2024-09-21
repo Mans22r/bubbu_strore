@@ -22,11 +22,39 @@ class _HomeScreenState extends State<HomeScreen> {
   final ProductController _productController = ProductController();
   late Future<List<Product>> _productsFuture;
   final List<Product> _wishlist = [];
+  final TextEditingController _searchController = TextEditingController();
+  List<Product> _allProducts = [];
+  List<Product> _filteredProducts = [];
 
   @override
   void initState() {
     super.initState();
     _productsFuture = _productController.getProducts();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    setState(() {
+      _filterProducts();
+    });
+  }
+
+  void _filterProducts() {
+    String query = _searchController.text.toLowerCase();
+    if (query.isEmpty) {
+      _filteredProducts = List.from(_allProducts);
+    } else {
+      _filteredProducts = _allProducts.where((product) {
+        return product.name.toLowerCase().contains(query);
+      }).toList();
+    }
   }
 
   void _addToWishlist(Product product) {
@@ -37,6 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
         _wishlist.add(product);
       }
     });
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
   }
 
   @override
@@ -57,6 +89,28 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(50.0),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search products...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: _clearSearch,
+                      )
+                    : null,
+              ),
+            ),
+          ),
+        ),
       ),
       body: FutureBuilder<List<Product>>(
         future: _productsFuture,
@@ -66,11 +120,15 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (snapshot.hasError) {
             return const Center(child: Text('Failed to load products'));
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            List<Product> products = snapshot.data!;
+            if (_allProducts.isEmpty) {
+              _allProducts = snapshot.data!;
+              _filteredProducts = List.from(_allProducts);
+            }
+
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: GridView.builder(
-                itemCount: products.length,
+                itemCount: _filteredProducts.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 15.0,
@@ -78,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   childAspectRatio: 0.65,
                 ),
                 itemBuilder: (context, index) {
-                  final product = products[index];
+                  final product = _filteredProducts[index];
                   return ProductCard(
                     product: product,
                     isInWishlist: _wishlist.contains(product),
@@ -107,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (index == 0) {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
           } else if (index == 1) {
-            
+
             Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
           }
         },
