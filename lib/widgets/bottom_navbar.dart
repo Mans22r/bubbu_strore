@@ -21,17 +21,14 @@ class BottomNavBarWidget extends StatelessWidget {
           icon: Icon(Icons.home_outlined),
           label: 'Home',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_border),
-          label: 'Wishlist',
-        ),
+
         BottomNavigationBarItem(
           icon: Icon(Icons.person_2_outlined),
           label: 'Profile',
         ),
       ],
       currentIndex: currentIndex,
-      selectedItemColor: const Color.fromARGB(255, 235, 178, 104),
+      selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
       onTap: onTap,
     );
   }

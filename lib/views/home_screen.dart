@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.favorite_border_outlined),
             onPressed: () {
               Navigator.push(
                 context,
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 15.0,
                   crossAxisSpacing: 15.0,
-                  childAspectRatio: 0.60,
+                  childAspectRatio: 0.65,
                 ),
                 itemBuilder: (context, index) {
                   final product = products[index];
@@ -107,9 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
           if (index == 0) {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
           } else if (index == 1) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => WishlistScreen(wishlist: _wishlist)));
-          }  else if (index == 2) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+            
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
           }
         },
       ),
