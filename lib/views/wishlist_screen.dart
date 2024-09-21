@@ -19,12 +19,15 @@ class WishlistScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Wishlist'),
+        title: const Text(
+          'Favorites',
+          style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold), // Set title color to white
+        ),
         centerTitle: true,
       ),
       body: wishlist.isEmpty
           ? const Center(
-              child: Text('No items in your wishlist'),
+              child: Text('No items in your favorite list'),
             )
           : ListView.builder(
               padding: const EdgeInsets.all(10.0),
