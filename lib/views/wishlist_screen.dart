@@ -1,14 +1,21 @@
+// lib/views/wishlist_screen.dart
+
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/product_model.dart';
+import '../providers/wishlist_provider.dart';
 import 'expanded_product_page.dart';
 
 class WishlistScreen extends StatelessWidget {
-  final List<Product> wishlist;
-
-  const WishlistScreen({super.key, required this.wishlist});
+  const WishlistScreen({super.key, required List wishlist});
 
   @override
   Widget build(BuildContext context) {
+    final wishlistProvider = Provider.of<WishlistProvider>(context);
+    final wishlist = wishlistProvider.wishlist;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -102,6 +109,6 @@ class WishlistScreen extends StatelessWidget {
                 );
               },
             ),
-    );
+      );
   }
 }
