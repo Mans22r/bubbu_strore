@@ -35,7 +35,7 @@ class ProductCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Adjusted image size and padding inside the card
+
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
                   child: Container(
@@ -93,7 +93,7 @@ class ProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            // Favorite button clipped over image
+
             Positioned(
               top: 8.0,
               right: 8.0,
@@ -111,7 +111,7 @@ class ProductCard extends StatelessWidget {
     );
   }
 
-  // Helper function to trim product name to 3 words
+
   String _trimProductName(String name) {
     List<String> words = name.split(' ');
     if (words.length > 3) {

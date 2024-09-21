@@ -15,7 +15,7 @@ class BottomNavBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),
@@ -28,7 +28,7 @@ class BottomNavBarWidget extends StatelessWidget {
         ),
       ],
       currentIndex: currentIndex,
-      selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+      selectedItemColor: const Color(0xFF8AB6F9),
       onTap: onTap,
     );
   }

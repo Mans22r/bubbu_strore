@@ -3,6 +3,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/wishlist_provider.dart';
 import '../controllers/product_controller.dart';
 import '../models/product_model.dart';
 import '../widgets/bottom_navbar.dart';
@@ -21,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ProductController _productController = ProductController();
   late Future<List<Product>> _productsFuture;
-  final List<Product> _wishlist = [];
+
   final TextEditingController _searchController = TextEditingController();
   List<Product> _allProducts = [];
   List<Product> _filteredProducts = [];
@@ -57,34 +59,29 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _addToWishlist(Product product) {
-    setState(() {
-      if (_wishlist.contains(product)) {
-        _wishlist.remove(product);
-      } else {
-        _wishlist.add(product);
-      }
-    });
-  }
-
   void _clearSearch() {
     _searchController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
+    final wishlistProvider = Provider.of<WishlistProvider>(context); // Access wishlist provider
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text('Products'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.favorite_border_outlined),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => WishlistScreen(wishlist: _wishlist)),
+                MaterialPageRoute(
+                  builder: (context) => const WishlistScreen(wishlist: []),
+                ),
               );
             },
           ),
@@ -137,10 +134,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 itemBuilder: (context, index) {
                   final product = _filteredProducts[index];
+                  final isInWishlist = wishlistProvider.isInWishlist(product); // Get the wishlist status
+
                   return ProductCard(
                     product: product,
-                    isInWishlist: _wishlist.contains(product),
-                    onAddToWishlist: () => _addToWishlist(product),
+                    isInWishlist: isInWishlist,
+                    onAddToWishlist: () {
+                      if (isInWishlist) {
+                        wishlistProvider.removeFromWishlist(product); // Remove from wishlist
+                      } else {
+                        wishlistProvider.addToWishlist(product); // Add to wishlist
+                      }
+                      setState(() {}); // Update the UI after adding/removing
+                    },
                     onTap: () {
                       Navigator.push(
                         context,
@@ -160,13 +166,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomNavBarWidget(
         currentIndex: 0,
-        
         onTap: (index) {
           if (index == 0) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+            // Stay on HomeScreen
           } else if (index == 1) {
-
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
           }
         },
       ),

@@ -1,5 +1,4 @@
-// lib/models/product_model.dart
-
+// product_model.dart
 class Product {
   final String name;
   final String imageUrl;
@@ -18,8 +17,18 @@ class Product {
     return Product(
       name: json['title'],
       imageUrl: json['image'],
-      price: json['price'].toDouble(), // Ensure price is cast to double
+      price: json['price'].toDouble(),
       description: json['description'],
     );
+  }
+
+  // Method to convert a Product instance to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'title': name,
+      'image': imageUrl,
+      'price': price,
+      'description': description,
+    };
   }
 }
